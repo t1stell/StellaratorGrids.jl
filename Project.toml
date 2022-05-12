@@ -1,0 +1,13 @@
+name = "StellaratorGrids"
+uuid = "2fa94731-8949-47e3-a940-b1a4085b105f"
+authors = ["Benjamin Faber <bfaber@wisc.edu> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1.7"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
