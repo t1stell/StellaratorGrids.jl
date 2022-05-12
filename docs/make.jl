@@ -5,12 +5,12 @@ DocMeta.setdocmeta!(StellaratorGrids, :DocTestSetup, :(using StellaratorGrids); 
 
 makedocs(;
     modules=[StellaratorGrids],
-    authors="Benjamin Faber <bfaber@wisc.edu> and contributors",
-    repo="https://gitlab.com/bfaber/StellaratorGrids.jl/blob/{commit}{path}#{line}",
+    authors="Benjamin Faber <wistell@wisc.edu> and contributors",
+    repo="https://gitlab.com/wistell/StellaratorGrids.jl/blob/{commit}{path}#{line}",
     sitename="StellaratorGrids.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://bfaber.gitlab.io/StellaratorGrids.jl",
+        canonical="https://wistell.gitlab.io/StellaratorGrids.jl",
         assets=String[],
     ),
     pages=[
