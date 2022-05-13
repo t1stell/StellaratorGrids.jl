@@ -3,6 +3,13 @@ uuid = "2fa94731-8949-47e3-a940-b1a4085b105f"
 authors = ["Aaron Bader <abader@wisc.edu>"]
 version = "0.1.0"
 
+[deps]
+PlasmaEquilibriumToolkit = "57ef8d28-8191-49ce-8cf8-17f9379aac88"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+Requires = "ae029012-a4dd-5104-9daa-d747884805df"
+Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
+VMEC = "2b46c670-0004-47b5-bf0a-1741584931e9"
+
 [compat]
 julia = "1.7"
 
