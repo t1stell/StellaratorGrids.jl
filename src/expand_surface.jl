@@ -1,8 +1,3 @@
-using VMEC
-using Plots
-using Roots
-using PlasmaEquilibriumToolkit
-
 function find_ζhat(vmecSurface::VmecSurface, ζ::Float64, θ::Float64, Δ::Float64;
                    min_dψ = nothing)
 
@@ -432,11 +427,11 @@ divertor, and making use of dψ/ds to automatically distinguish whether a given
 poloidal value will be a wall or divertor value. 
 
 At each poloidal point the value of dψ/ds is calculate.  Values lower than 
-target_dψ are designated at divertors, while larger values are walls. It
-is possible to set divertors or walls everywhere by making target_dψ very
+`target_dψ` are designated at divertors, while larger values are walls. It
+is possible to set divertors or walls everywhere by making `target_dψ` very
 large or very small.
 
-If uniform_div or uniform_wall is false, then the value to expand is locally
+If `uniform_div` or `uniform_wall` is false, then the value to expand is locally
 calculated using
 
 Δ' = Δ * (|dψ/ds_min|/|dψ/ds|)^α
@@ -562,4 +557,45 @@ function expanded_wall_auto(vmecSurface::VmecSurface,
   end
 
   close(io)
+end
+
+
+"""
+    function expanded_wall_simple(vmecSurface::VmecSurface, 
+                       ζRange::StepRangeLen, 
+                       θRanges::StepRangeLen, 
+                       Δ;
+                       uniform = false,
+                       wf = "wall.txt", α = 1,
+                       showplot=nothing)
+
+Simplified version of `expanded_wall_auto` that doesn't distinguish between wall 
+and divertor sections.
+
+# Arguments
+ - `vmecSurface::VmecSurface`: the VMEC surface file to use as the expansion base
+ - `ζRange::StepRangeLen`: The range of toroidal angles to expand the surface at
+ - `θRange::StepRangeLen`: The range of poloidal angles (calculated on the VMEC surface) to expand outwards at
+ - `Δ::Float64`: Distance in meters for the boundary (which may be scaled depending on optional arguments)
+
+# Optional Arguments
+ - `uniform = false`: If false, boundary will have an adjustable length that scales with the α parameter. If true, it will be uniform distance from the VmecSurface
+ - `wf="wall.txt"`: Output file for the resulting surface
+ - `α=1`: α value to be used if boundary is non-uniform
+ - `showplot = nothing`: For diagnostic purposes, set to an integer it will save a plot to "wallfig.png" of the toroidal _index_ 
+"""
+function expanded_wall_simple(vmecSurface::VmecSurface, 
+                       ζRange::StepRangeLen{T, R, S, L}, 
+                       θRange::StepRangeLen{T, R, S, L},
+                       Δ::Float64;
+                       uniform = false, 
+                       wf = "wall.txt",
+                       α = 1, showplot = nothing) where {T,R,S,L}
+
+  if uniform == true
+    expanded_wall_auto(vmecSurface, ζRange, θRange, 0.0, Δ, Δ, α_wall = α, wf=wf, showplot=showplot)
+  else
+    expanded_wall_auto(vmecSurface, ζRange, θRange, 1.0E10, Δ, Δ, α_div = α, wf=wf, showplot=showplot)
+
+  end
 end
