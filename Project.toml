@@ -1,7 +1,7 @@
 name = "StellaratorGrids"
 uuid = "2fa94731-8949-47e3-a940-b1a4085b105f"
 authors = ["Aaron Bader <abader@wisc.edu>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 PlasmaEquilibriumToolkit = "57ef8d28-8191-49ce-8cf8-17f9379aac88"
@@ -11,6 +11,11 @@ Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
 VMEC = "2b46c670-0004-47b5-bf0a-1741584931e9"
 
 [compat]
+PlasmaEquilibriumToolkit = "0.4, 0.5"
+Plots = "1"
+Requires = "1"
+Roots = "1, 2"
+VMEC = "0.4, 0.5"
 julia = "1.7"
 
 [extras]
