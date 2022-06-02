@@ -1,7 +1,7 @@
 name = "StellaratorGrids"
 uuid = "2fa94731-8949-47e3-a940-b1a4085b105f"
 authors = ["Aaron Bader <abader@wisc.edu>"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 PlasmaEquilibriumToolkit = "57ef8d28-8191-49ce-8cf8-17f9379aac88"
