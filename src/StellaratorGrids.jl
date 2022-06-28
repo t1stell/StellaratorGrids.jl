@@ -7,7 +7,8 @@ using Plots
 using PlasmaEquilibriumToolkit
 # Write your package code here.
 
-include("expand_surface.jl")
+export expanded_wall_auto, expanded_wall_simple
 
+include("expand_surface.jl")
 
 end
