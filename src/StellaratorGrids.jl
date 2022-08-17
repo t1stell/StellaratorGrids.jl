@@ -3,6 +3,7 @@ module StellaratorGrids
 using Requires
 using VMEC
 using Roots
+using Interpolations
 using Plots
 using PlasmaEquilibriumToolkit
 # Write your package code here.

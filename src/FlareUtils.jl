@@ -1,5 +1,3 @@
-using Interpolations
-
 struct FlareWall{FT, IT}
   nζ::IT
   nθ::IT
