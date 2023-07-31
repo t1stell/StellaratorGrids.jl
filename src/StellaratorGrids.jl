@@ -6,9 +6,11 @@ using Roots
 using Interpolations
 using Plots
 using PlasmaEquilibriumToolkit
-# Write your package code here.
 
 export expanded_wall_auto, expanded_wall_simple
+
+#types
+export FlareWall
 
 #flare utils
 export read_flare_strike, get_flare_strike_2d, read_flare_wall
