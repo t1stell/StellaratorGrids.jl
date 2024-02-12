@@ -113,7 +113,7 @@ function read_flare_wall(filename::String;
     return FlareWall(nζ, nθ, Rp, Zp, ζs, θs, nfp, nothing, nothing, "")
   end
 
-  ζrange = range(0, 2π/nfp, nζ)
+  ζrange = range(ζs[1], ζs[end], nζ)
   (R, Z) = create_wall_splines(ζrange, θuniform, Rp, Zp, θparam)
   return FlareWall(nζ, nθ, Rp, Zp, ζs, θs, nfp, R, Z, θparam)
 
@@ -126,7 +126,7 @@ function create_wall_splines(ζrange, θrange, Rp, Zp, θparam)
   itp_types = (BSpline(Cubic(Periodic(OnGrid()))),
                BSpline(Cubic(Periodic(OnGrid()))))
   itp = (f) -> scale(interpolate(f, itp_types), knots...)
-  extp = (f) -> extrapolate(itp(f), (Periodic(), Periodic()))
+  extp = (f) -> extrapolate(itp(f), (Periodic(), Throw()))
   R = extp(Rp)
   Z = extp(Zp)
   return R, Z
