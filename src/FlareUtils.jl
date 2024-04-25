@@ -124,7 +124,7 @@ function create_wall_splines(ζrange, θrange, Rp, Zp, θparam)
   #right now we don't use θparam, save this for later
   knots = (θrange, ζrange)
   itp_types = (BSpline(Cubic(Periodic(OnGrid()))),
-               BSpline(Cubic(Throw(OnGrid()))))
+               BSpline(Linear(Throw(OnGrid()))))
   itp = (f) -> scale(interpolate(f, itp_types), knots...)
   extp = (f) -> extrapolate(itp(f), (Periodic(), Throw()))
   R = extp(Rp)
