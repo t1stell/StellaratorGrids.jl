@@ -62,7 +62,7 @@ end
 function write_wall(fw::FlareWall, wfname::String; units="m")    
     io = open(wfname,"w")
     write(io,"#Wall\n")
-    s = string(fw.nζ)*"\t"*string(fw.nθ)*"\t"*string(fw.nfp)*"0.0 0.0\n"
+    s = string(fw.nζ)*"\t"*string(fw.nθ)*"\t"*string(fw.nfp)*" 0.0 0.0\n"
     write(io, s)
     for iζ in 1:fw.nζ
         write(io, "  "*string(fw.ζs[iζ]*180/π)*"\n")

@@ -237,7 +237,7 @@ function expanded_wall(vmecSurface::VmecSurface,
 
   io = open(wf,"w")
   write(io,"#Wall\n")
-  s = string(nt)*"\t"*string(np)*"\t"*string(vmecSurface.nfp)*"0.0 0.0\n"
+  s = string(nt)*"\t"*string(np)*"\t"*string(vmecSurface.nfp)*" 0.0 0.0\n"
   write(io, s)
 
   for (i,ζ) in enumerate(ζRange)
