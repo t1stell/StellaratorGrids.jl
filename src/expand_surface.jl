@@ -181,16 +181,6 @@ function connecting_wall(rstart::Float64,rend::Float64,zstart::Float64,
   return r,z
 end
 
-function write_segment(rs,
-                       zs,
-                       io::IOStream)
-  for (i,r) in enumerate(rs)
-    z = zs[i]
-    s = string(r)*"\t"*string(z)*"\n"
-    write(io, s)
-  end
-end
-
 
 """
     function expanded_wall(vmecSurface::VmecSurface, ζRange::StepRangeLen, 
@@ -213,6 +203,7 @@ function expanded_wall(vmecSurface::VmecSurface,
                        ΔDivertor::Float64, ΔWall::Float64;
                        wall_res = 20, uniform_div = false, 
                        uniform_wall = true, wf = "wall.txt",
+                       cm = false,
                        α_div=1, α_wall=1,
                        showplot=nothing, smoothbuff = π/10,
                        buffwidth = 10) where {T, R, S, L}
@@ -246,7 +237,7 @@ function expanded_wall(vmecSurface::VmecSurface,
 
   io = open(wf,"w")
   write(io,"#Wall\n")
-  s = string(nt)*"\t"*string(np)*"\t"*string(vmecSurface.nfp)*"\n"
+  s = string(nt)*"\t"*string(np)*"\t"*string(vmecSurface.nfp)*"0.0 0.0\n"
   write(io, s)
 
   for (i,ζ) in enumerate(ζRange)
@@ -286,9 +277,9 @@ function expanded_wall(vmecSurface::VmecSurface,
         if showplot == 1 
           plot!(rb, zb, linewidth=2, color=:blue)
         end
-        write_segment(rb,zb,io)
+        write_segment(rb,zb,io, cm=cm)
       end
-      write_segment(r,z,io)
+      write_segment(r,z,io, cm=cm)
 
 
 

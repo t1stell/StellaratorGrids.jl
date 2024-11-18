@@ -30,8 +30,64 @@ struct StrikePointInfo{FT}
   Z_start::Array{FT, 1}
   ϕ_start::Array{FT, 1}
 end
-"""
 
+"""
+resample_flare_wall(flareWall, θlist, ζlist)
+
+Resamples the flare wall given new lists of poloidal and toroidal values
+
+"""
+function resample_flare_wall(fw::FlareWall, θrange, ζrange; write_name = Nothing, units="m")
+    nfp = Int64(fw.nfp)
+    nζ = length(ζrange)
+    nθ = length(θrange)
+    ζs = Array{Float64}(undef, nζ)
+    θs = Array{Float64}(undef, nθ, nζ)
+    Rp = similar(θs)
+    Zp = similar(θs)
+    for iζ in 1:length(ζrange)
+        ζs[iζ] = ζrange[iζ]
+        for iθ in 1:length(θrange)
+            θs[iθ, iζ] = θrange[iθ]
+            println(θs[iθ, iζ], " ",ζs[iζ])
+            Rp[iθ, iζ] = fw.R(θs[iθ, iζ], ζs[iζ])
+            Zp[iθ, iζ] = fw.Z(θs[iθ, iζ], ζs[iζ])
+        end
+    end
+
+    (R, Z) = create_wall_splines(ζrange, θrange, Rp, Zp, "none")
+    return FlareWall(nζ, nθ, Rp, Zp, ζs, θs, nfp, R, Z, "none")
+end
+
+function write_wall(fw::FlareWall, wfname::String; units="m")    
+    io = open(wfname,"w")
+    write(io,"#Wall\n")
+    s = string(fw.nζ)*"\t"*string(fw.nθ)*"\t"*string(fw.nfp)*"0.0 0.0\n"
+    write(io, s)
+    for iζ in 1:fw.nζ
+        write(io, "  "*string(fw.ζs[iζ]*180/π)*"\n")
+        write_segment(fw.Rp[:,iζ], fw.Zp[:,iζ], io, units=units)
+    end
+    close(io)
+end
+
+function write_segment(rs,
+                       zs,
+                       io::IOStream;
+                       units="m")
+  mult = 1
+  if units == "cm"
+    mult = 100
+  end
+
+  for (i,r) in enumerate(rs)
+    z = zs[i]
+    s = string(r*mult)*"\t"*string(z*mult)*"\n"
+    write(io, s)
+  end
+end
+
+"""
 This function can read a flare wall and create a wall object, also useful for EMC3 walls
 
 Note: walls must be uniform in poloidal and toroidal directions (for now)
@@ -43,10 +99,10 @@ options:
   θparam: default "none" none uses a uniform parametrization based on input
 """
 function read_flare_wall(filename::String;
-                         units::String = "m",
                          angles::String = "deg",
                          make_splines::Bool = true,
-                         θparam::String = "none")
+                         θparam::String = "none",
+                         units::String = "m")
   c = 1
   data = readlines(filename)
 
