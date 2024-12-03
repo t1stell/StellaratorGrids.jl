@@ -439,6 +439,7 @@ function expanded_wall_auto(vmecSurface::VmecSurface,
                        uniform_div = false, 
                        uniform_wall = true, wf = "wall.txt",
                        α_div = 1, α_wall = 1,
+                       cm = False,
                        showplot=nothing, buffwidth = 10) where {T, R, S, L}
 
   
@@ -447,10 +448,16 @@ function expanded_wall_auto(vmecSurface::VmecSurface,
   end
   nt = length(ζRange)
   np = length(θRange)
-  
+ 
+  if cm
+      mult = 100
+  else
+      mult=1
+  end
+
   io = open(wf,"w")
   write(io,"#Wall\n")
-  s = string(nt)*"\t"*string(np)*"\t"*string(vmecSurface.nfp)*"\n"
+  s = string(nt)*"\t"*string(np)*"\t"*string(vmecSurface.nfp)*" 0.0 0.0\n"
   write(io, s)
 
   dψ = Vector{Float64}(undef, np)
@@ -541,7 +548,7 @@ function expanded_wall_auto(vmecSurface::VmecSurface,
     if showplot == iζ
       plot!(rwall, zwall, color=:red)
     end
-    write_segment(rwall,zwall,io)
+    write_segment(rwall.*mult,zwall.*mult,io)
   end
   if showplot != nothing
     savefig("wallfig.png")
@@ -581,12 +588,13 @@ function expanded_wall_simple(vmecSurface::VmecSurface,
                        Δ::Float64;
                        uniform = false, 
                        wf = "wall.txt",
+                       cm = false,
                        α = 1, showplot = nothing) where {T,R,S,L}
 
   if uniform == true
-    expanded_wall_auto(vmecSurface, ζRange, θRange, 0.0, Δ, Δ, α_wall = α, wf=wf, showplot=showplot)
+    expanded_wall_auto(vmecSurface, ζRange, θRange, 0.0, Δ, Δ, α_wall = α, wf=wf, showplot=showplot, cm=cm)
   else
-    expanded_wall_auto(vmecSurface, ζRange, θRange, 1.0E10, Δ, Δ, α_div = α, wf=wf, showplot=showplot)
+    expanded_wall_auto(vmecSurface, ζRange, θRange, 1.0E10, Δ, Δ, α_div = α, wf=wf, showplot=showplot, cm=cm)
 
   end
 end
