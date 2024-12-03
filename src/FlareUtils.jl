@@ -102,6 +102,7 @@ function read_flare_wall(filename::String;
                          angles::String = "deg",
                          make_splines::Bool = true,
                          θparam::String = "none",
+                         θarray = nothing,
                          units::String = "m")
   c = 1
   data = readlines(filename)
@@ -128,7 +129,11 @@ function read_flare_wall(filename::String;
     c += 1
   end
 
-  θuniform = range(0, 2π, nθ)
+  if θarray == nothing
+      θuniform = range(0, 2π, nθ)
+  else
+      θuniform = θarray
+  end
   #set up the arrays
   ζs = Array{Float64}(undef, nζ)
   θs = Array{Float64}(undef, nθ, nζ)
