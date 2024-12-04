@@ -49,7 +49,6 @@ function resample_flare_wall(fw::FlareWall, θrange, ζrange; write_name = Nothi
         ζs[iζ] = ζrange[iζ]
         for iθ in 1:length(θrange)
             θs[iθ, iζ] = θrange[iθ]
-            println(θs[iθ, iζ], " ",ζs[iζ])
             Rp[iθ, iζ] = fw.R(θs[iθ, iζ], ζs[iζ])
             Zp[iθ, iζ] = fw.Z(θs[iθ, iζ], ζs[iζ])
         end
