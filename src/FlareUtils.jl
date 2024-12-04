@@ -184,16 +184,27 @@ function create_wall_splines(ζrange, θrange, Rp, Zp, θparam)
 
   #right now we don't use θparam, save this for later
   knots = (θrange, ζrange)
-  #do periodic in theta if the divertor goes from 0 to 2pi
   if θrange[1] == 0 && abs(θrange[end] - 2π) < 1.0E-10
+      wrap = true
+  else
+      wrap = false
+  end
+  #do periodic in theta if the divertor goes from 0 to 2pi
+  if wrap
       itp_types = (BSpline(Cubic(Periodic(OnGrid()))),
                    BSpline(Linear(Throw(OnGrid()))))
   else 
-      itp_types = (BSpline(Cubic(Throw(OnGrid()))),
+      itp_types = (BSpline(Linear(Throw(OnGrid()))),
                    BSpline(Linear(Throw(OnGrid()))))
   end
   itp = (f) -> scale(interpolate(f, itp_types), knots...)
-  extp = (f) -> extrapolate(itp(f), (Periodic(), Throw()))
+  
+  if wrap
+      extp = (f) -> extrapolate(itp(f), (Periodic(), Throw()))
+  else
+      extp = (f) -> extrapolate(itp(f), (Throw(), Throw()))
+  end
+
   R = extp(Rp)
   Z = extp(Zp)
   return R, Z

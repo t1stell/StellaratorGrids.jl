@@ -440,6 +440,7 @@ function expanded_wall_auto(vmecSurface::VmecSurface,
         uniform_wall = true, wf = nothing,
         α_div = 1, α_wall = 1,
         units = "m",
+        wrapθ = true,
         showplot=nothing, buffwidth = 10) where {T, RR, S, L}
 
 
@@ -499,7 +500,7 @@ function expanded_wall_auto(vmecSurface::VmecSurface,
                 continue
             end
             #last and first point must be the same
-            if i == length(θRange)
+            if i == length(θRange) && wrapθ
                 dψ[i] = dψ[1]
                 continue
             end
@@ -513,7 +514,7 @@ function expanded_wall_auto(vmecSurface::VmecSurface,
 
         #Pass 3, assign the values
         for (i,θ) in enumerate(θRange)
-            if i == length(θRange)
+            if i == length(θRange) && wrapθ
                 rwall[i] = rwall[1]
                 zwall[i] = zwall[1]
                 continue
@@ -604,14 +605,15 @@ function expanded_wall_simple(vmecSurface::VmecSurface,
         uniform = false, 
         wf = "wall.txt",
         units = "m",
+        wrapθ = true,
         α = 1, showplot = nothing) where {T,R,S,L}
 
     if uniform == true
         expanded_wall_auto(vmecSurface, ζRange, θRange, 0.0, Δ, Δ, α_wall = α, wf=wf, 
-                           showplot=showplot, units=units)
+                           showplot=showplot, units=units, wrapθ=wrapθ)
     else
         expanded_wall_auto(vmecSurface, ζRange, θRange, 1.0E10, Δ, Δ, α_div = α, wf=wf, 
-                           showplot=showplot, units=unirts)
+                           showplot=showplot, units=unirts, wrapθ=wrapθ)
 
     end
 end
