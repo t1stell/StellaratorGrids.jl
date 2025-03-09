@@ -12,6 +12,7 @@ Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
 VMEC = "2b46c670-0004-47b5-bf0a-1741584931e9"
 
 [compat]
+Interpolations = "0.15"
 PlasmaEquilibriumToolkit = "0.6, 0.7"
 Plots = "1"
 Requires = "1"
